@@ -10,6 +10,7 @@ export type Record = {
     name: string;
     city: string;
     timezone: string;
-    diff_gmt: string;
+    currentTime: string;
+    diffGMT: string;
     creator: string;
 }
