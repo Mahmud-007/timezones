@@ -4,4 +4,8 @@ const nextConfig = {
   swcMinify: true,
 }
 
-module.exports = nextConfig
+module.exports = {
+  env:{
+    // mongodburl: "mongodb+srv://Mahmud:M%40h8564mud@cluster0.ewdsvzg.mongodb.net/timezone",
+  }
+}

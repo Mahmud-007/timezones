@@ -1,13 +1,18 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
+import { connect } from "http2";
+import type { NextApiRequest, NextApiResponse } from "next";
+import connectDB from "../../utils/connectDB";
 
 type Data = {
-  name: string
-}
+  name: string;
+};
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  res.status(200).json({ name: 'John Doe' })
+  console.log("connecting to mongo");
+   connectDB();
+  console.log("connected");
+  res.status(200).json({ name: "John Doe" });
 }
