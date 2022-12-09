@@ -10,8 +10,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  console.log("connecting to mongo");
-  await connectDB();
-  await loginController(req, res);
-  res.status(200).json({ name: "John Doe" });
+  try {
+    await connectDB();
+    await loginController(req, res);
+  } catch (err) {
+    console.log({ err });
+  }
 }
