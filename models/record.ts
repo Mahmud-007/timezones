@@ -1,24 +1,22 @@
 import mongoose, { model, models } from "mongoose";
-var Schema = mongoose.Schema;
 
-var userSchema = new Schema({
+let recordSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  role: {
+  city: {
     type: String,
     required: true,
   },
-  password: {
+  timezone: {
+    type: String,
+    required: true,
+  },
+  user: {
     type: String,
     required: true,
   },
 });
-const User = models.User || model("User", userSchema);
-export default User;
+const Record = models.Record || model("Record", recordSchema);
+export default Record;

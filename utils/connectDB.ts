@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
 const connectDB = async () => {
-  const url: string = process.env.mongodburl || " ";
-
-  console.log("mongo log", process.env.mongodburl);
+  // const url:string = ;
   try {
-    await mongoose.createConnection(url, () => {
-      console.log("connected done");
-    });
+    mongoose.set("strictQuery", true);
+    await mongoose.connect(process.env.mongodburl || "");
+    console.log("Database Connected");
   } catch (e) {
     console.log({ e });
   }

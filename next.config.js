@@ -6,6 +6,6 @@ const nextConfig = {
 
 module.exports = {
   env:{
-    // mongodburl: "mongodb+srv://Mahmud:M%40h8564mud@cluster0.ewdsvzg.mongodb.net/timezone",
+    mongodburl: "mongodb+srv://admin:admin1234@cluster0.nayru5u.mongodb.net/?retryWrites=true&w=majority",
   }
 }

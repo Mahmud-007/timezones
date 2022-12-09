@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import useRouter from "next/router";
 
 const pages = ["records", "users"];
 const settings = ["Profile", "Dashboard"];
