@@ -1,11 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { isJSDocAuthorTag } from "typescript";
 import connectDB from "../../utils/connectDB";
 import isAuth from "../../controllers/isAuth";
-import { JwtPayload } from "jsonwebtoken";
 
 type Data = {
-  name: string;
+  message: string;
 };
 
 export default async function handler(
