@@ -13,7 +13,7 @@ export default async function signup(
   console.log(req.body);
   try {
     await connectDB();
-    signupController(req, res);
+    await signupController(req, res);
   } catch (err) {
     console.log({ err });
   }

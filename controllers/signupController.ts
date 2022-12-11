@@ -28,13 +28,9 @@ export default async function signupController(
       password: encryptedPassword,
       role,
     });
-    const token = jwt.sign(
-      { user_id: user._id, email },
-      process.env.TOKEN_KEY || "",
-      {
-        expiresIn: "2h",
-      }
-    );
+    const token = jwt.sign({ name, email, role }, process.env.TOKEN_KEY || "", {
+      expiresIn: "2h",
+    });
     user.token = token;
     res.status(201).json(user);
   } catch (err) {

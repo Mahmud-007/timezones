@@ -15,7 +15,7 @@ export default async function loginController(
     const user = await User.findOne({ email });
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = jwt.sign(
-        { user_id: user._id, email },
+        { user},
         process.env.TOKEN_KEY || "",
         {
           expiresIn: "2h",
