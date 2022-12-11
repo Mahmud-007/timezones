@@ -15,7 +15,7 @@ export default async function records(
     const user = await isAuth(token.split(" ")[1]);
     console.log({ user });
     if (user.role === "admin") {
-      const records = await Record.find();
+      const records = await Record.find({});
       console.log({ records });
       res.status(200).json({records});
     }
