@@ -11,13 +11,12 @@ export default async function updateRecords(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { name, city, timezone } = req.body;
   const { recoredID, recUserID } = req.query;
-  const authorization: string = req.headers.authorization || "";
-  console.log({ authorization });
+  const token: string = req.headers.authorization || "";
+  console.log({ token });
   try {
     await connectDB();
-    const user = await isAuth(authorization.split(" ")[1]);
+    const user = await isAuth(token.split(" ")[1]);
     console.log(user);
     if (user._id === recUserID || user.role === "admin") {
       let updatedRecord = await Record.findOneAndUpdate(
