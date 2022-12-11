@@ -20,7 +20,7 @@ export default async function records(
       res.status(200).json({records});
     }
     else{
-        const records = await Record.find({user:user.id});
+        const records = await Record.find({user:user._id});
         console.log({ records });
         res.status(200).json({records});
     }

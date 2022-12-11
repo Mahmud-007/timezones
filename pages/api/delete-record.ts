@@ -1,23 +1,30 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import connectDB from "../../utils/connectDB";
 import isAuth from "../../controllers/isAuth";
+import Record from "../../models/record";
+import connectDB from "../../utils/connectDB";
 
 type Data = {
   message: string;
 };
 
-export default async function deleteRecord(
+export default async function updateRecords(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  const { recoredID, recUserID } = req.query;
+  const token: string = req.headers.authorization || "";
+  console.log({ token });
   try {
     await connectDB();
-    const payload = await isAuth(
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzOTRhYjUyOTdmN2M5YzFiODBlMmZjMCIsIm5hbWUiOiJNYWhtdWQiLCJlbWFpbCI6Im1haG11ZDY3OTlAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwicGFzc3dvcmQiOiIkMmIkMTAkY0JlQndIMFVNMVk4b1Yyb3hGOFIuT3ovWkVLVnlXV3BIZVIxdkluTmxqMWJoRFRLcWhERC4iLCJfX3YiOjB9LCJpYXQiOjE2NzA3Mzc4NTYsImV4cCI6MTY3MDc0NTA1Nn0.xFkkw79DmGD5UJqRDYsKrhSDV8bNbxOd-956agh8Tdk"
-    );
-    console.log({ payload });
-    res.status(200).json(payload);
+    const user = await isAuth(token.split(" ")[1]);
+    console.log(user);
+    if (user._id === recUserID || user.role === "admin") {
+      await Record.deleteOne({ _id: recoredID });
+      res.json({ message: "One Record deleted" });
+    } else {
+      res.json({ message: "Not authorized to delete a Record" });
+    }
   } catch (err) {
-    console.log(err);
+    console.log({ err });
   }
 }
