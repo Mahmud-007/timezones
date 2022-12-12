@@ -26,14 +26,14 @@ export default async function updateRecords(
       }
     );
     const updatedUserObject = {
-      _id: user.id,
+      _id: user._id,
       name,
       email,
       role,
       encryptedPassword,
       token,
     };
-    if (user.role === "admin" && user.role === "manager") {
+    if (user.role === "admin" || user.role === "manager") {
       let updatedUser = await User.findOneAndUpdate(
         { _id: userID },
         updatedUserObject

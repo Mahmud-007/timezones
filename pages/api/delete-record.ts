@@ -3,13 +3,9 @@ import isAuth from "../../controllers/isAuth";
 import Record from "../../models/record";
 import connectDB from "../../utils/connectDB";
 
-type Data = {
-  message: string;
-};
-
 export default async function updateRecords(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
   const { recoredID, recUserID } = req.query;
   const token: string = req.headers.authorization || "";
