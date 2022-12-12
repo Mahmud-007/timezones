@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Record } from "../type";
+import { useEffect, useState } from "react";
+import { RecordType } from "../type";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,34 +7,28 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import axios from "axios";
+import CurrentTime from "./CurrentTime";
 
 export default function TimezoneRecord() {
-  const [records, setRecords] = useState<Record[]>([
-    {
-      id: "1",
-      name: "First",
-      city: "Dhaka",
-      timezone: "Asia/Dhaka",
-      currentTime: "",
-      diffGMT: "",
-      creator: "user-1",
-    },
-    {
-      id: "2",
-      name: "Second",
-      city: "Dubai",
-      timezone: "Asia/Dubai",
-      currentTime: "",
-      diffGMT: "",
-      creator: "user-2",
-    },
-  ]);
-  const timezoneToCurrentTime = (timezone: string) => {
-    let date = new Date();
-    let strTime = date.toLocaleString("en-US", { timeZone: `${timezone}` });
-    console.log(timezone, strTime);
-    return strTime;
-  };
+  const [records, setRecords] = useState<RecordType[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/records", {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Mzk2ZDczYWE0MTllZTFkZDgyNTEwZjUiLCJuYW1lIjoiYWRtaW4xIiwiZW1haWwiOiJhZG1pbjFAeWFob28uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjcwODUzNjkzLCJleHAiOjE2NzA4NjA4OTN9.qDkEvEk8tJlNeKsgtXjp0SLy73ZUukgNSc5w_ziToYE",
+        },
+      })
+      .then((response) => {
+        setRecords(response.data.records);
+        console.log("data", response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <div>
       Record
@@ -64,7 +58,7 @@ export default function TimezoneRecord() {
                 <TableCell align="right">{row.city}</TableCell>
                 <TableCell align="right">{row.timezone}</TableCell>
                 <TableCell align="right">
-                  {/* {timezoneToCurrentTime(row.timezone)} */}
+                  <CurrentTime timezone={row.timezone} />
                 </TableCell>
                 <TableCell align="right">{row.timezone}</TableCell>
               </TableRow>
