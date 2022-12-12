@@ -34,7 +34,7 @@ export default function TimezoneRecord() {
       Record
       <TableContainer
         component={Paper}
-        sx={{ width: 1200, marginTop: 10, marginLeft: 50 }}
+        sx={{ width: 1200, marginTop: 10, marginLeft: 900 }}
       >
         <Table aria-label="simple table">
           <TableHead>
