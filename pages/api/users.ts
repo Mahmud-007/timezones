@@ -1,19 +1,31 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import connectDB from "../../utils/connectDB";
 import isAuth from "../../controllers/isAuth";
+import User from "../../models/user";
 
-export default async function handler(
+export default async function records(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const token: string = req.headers.authorization || "";
+  console.log({ token });
   try {
     await connectDB();
-    const payload = await isAuth(
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzOTRhYjUyOTdmN2M5YzFiODBlMmZjMCIsIm5hbWUiOiJNYWhtdWQiLCJlbWFpbCI6Im1haG11ZDY3OTlAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwicGFzc3dvcmQiOiIkMmIkMTAkY0JlQndIMFVNMVk4b1Yyb3hGOFIuT3ovWkVLVnlXV3BIZVIxdkluTmxqMWJoRFRLcWhERC4iLCJfX3YiOjB9LCJpYXQiOjE2NzA3Mzc4NTYsImV4cCI6MTY3MDc0NTA1Nn0.xFkkw79DmGD5UJqRDYsKrhSDV8bNbxOd-956agh8Tdk"
-    );
-    console.log({ payload });
-    res.status(200).json(payload);
+    const user = await isAuth(token.split(" ")[1]);
+    console.log({ user });
+    if (user.role === "admin" || user.role === "manager") {
+      const users = await User.find({});
+      console.log({ users });
+      res.status(200).json({users});
+    }
+    else{
+        const users = await User.find({user:user._id});
+        console.log({ users });
+        res.status(200).json({users});
+    }
   } catch (err) {
-    console.log(err);
+    console.log({err});
+    res.status(200).json({err});
+
   }
 }

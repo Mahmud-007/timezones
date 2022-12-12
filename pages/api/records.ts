@@ -7,7 +7,6 @@ export default async function records(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { recoredID, recUserID } = req.query;
   const token: string = req.headers.authorization || "";
   console.log({ token });
   try {
