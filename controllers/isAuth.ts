@@ -1,15 +1,7 @@
 import jwt from "jsonwebtoken";
+import {UserType} from "../src/type";
 
-interface userType {
-  _id: string;
-  name: string;
-  email: string;
-  role: string;
-  password: string;
-  token: string;
-}
-
-const defaultUser: userType = {
+const defaultUser: UserType = {
   _id: "",
   name: "",
   email: "",
@@ -21,9 +13,7 @@ const defaultUser: userType = {
 export default async function isAuth(token: string) {
   let decoded = defaultUser;
   try {
-    decoded = jwt.verify(token, process.env.TOKEN_KEY || "")  as userType;
-    // const user: any = decoded || "";
-    // console.log({decoded, user})
+    decoded = jwt.verify(token, process.env.TOKEN_KEY || "") as UserType;
     return decoded;
   } catch (err) {
     console.log({ err });

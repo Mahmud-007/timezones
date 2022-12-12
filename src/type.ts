@@ -1,12 +1,13 @@
-export type User = {
-  id: string;
+export type UserType = {
+  _id: string;
   name: string;
   email: string;
   password: string;
   role: string;
+  token: string;
 };
-export type Record = {
-  id: string;
+export type RecordType = {
+  _id: string;
   name: string;
   city: string;
   timezone: string;
