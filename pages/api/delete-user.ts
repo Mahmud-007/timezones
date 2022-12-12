@@ -35,7 +35,7 @@ export default async function updateRecords(
     };
     if (user.role === "admin" || user.role === "manager") {
       await User.deleteOne(
-        { _id: user._id },
+        { _id: userID },
       );
       res.json({ message: "One User deleted by "+user.role });
     } else if (user._id === userID) {

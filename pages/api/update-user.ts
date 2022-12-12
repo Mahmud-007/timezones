@@ -10,7 +10,7 @@ export default async function updateRecords(
   res: NextApiResponse
 ) {
   const { userID } = req.query;
-  const { _id, name, email, role, password } = req.body;
+  const { name, email, role, password } = req.body;
   const bearerToken: string = req.headers.authorization || "";
   console.log({ bearerToken });
   try {
@@ -19,14 +19,14 @@ export default async function updateRecords(
     console.log({ user });
     const encryptedPassword = await bcrypt.hash(password, 10);
     const token = jwt.sign(
-      { _id, name, email, role },
+      { _id:userID, name, email, role },
       process.env.TOKEN_KEY || "",
       {
         expiresIn: "2h",
       }
     );
     const updatedUserObject = {
-      _id: user._id,
+      _id: userID,
       name,
       email,
       role,

@@ -14,10 +14,15 @@ export default async function createRecord(
     await connectDB();
     const user = await isAuth(token.split(" ")[1]);
     console.log({ user });
-    const record = new Record({ name, city, timezone, user: user._id });
-    await record.save();
+    if (user.role !== "manager") {
+      const record = await Record.create({ name, city, timezone, user: user._id });
     console.log("Record Created");
     res.json(record);
+    }
+    else{
+      res.json({ message:"A manager can not create a record"});
+
+    }
   } catch (err) {
     console.log({ err });
     res.json(err);
