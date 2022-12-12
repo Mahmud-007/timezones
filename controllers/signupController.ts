@@ -35,6 +35,6 @@ export default async function signupController(
     res.status(201).json(user);
   } catch (err) {
     console.log(err);
-    res.send({ message: err });
+    res.status(400).send({ message: err });
   }
 }

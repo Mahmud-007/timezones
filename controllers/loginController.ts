@@ -15,7 +15,7 @@ export default async function loginController(
     const user = await User.findOne({ email });
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = jwt.sign(
-        { name: user.name, email: user.email, role: user.role },
+        { _id: user.id, name: user.name, email: user.email, role: user.role },
         process.env.TOKEN_KEY || "",
         {
           expiresIn: "2h",
@@ -28,5 +28,7 @@ export default async function loginController(
     }
   } catch (err) {
     console.log("hre", { err });
+    res.status(400).send(err);
+
   }
 }
