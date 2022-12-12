@@ -1,19 +1,53 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import connectDB from "../../utils/connectDB";
 import isAuth from "../../controllers/isAuth";
+import User from "../../models/user";
+import connectDB from "../../utils/connectDB";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
-export default async function deleteUser(
+export default async function updateRecords(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const { userID } = req.query;
+  const { _id, name, email, role, password } = req.body;
+  const bearerToken: string = req.headers.authorization || "";
+  console.log({ bearerToken });
   try {
     await connectDB();
-    const payload = await isAuth(
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzOTRhYjUyOTdmN2M5YzFiODBlMmZjMCIsIm5hbWUiOiJNYWhtdWQiLCJlbWFpbCI6Im1haG11ZDY3OTlAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwicGFzc3dvcmQiOiIkMmIkMTAkY0JlQndIMFVNMVk4b1Yyb3hGOFIuT3ovWkVLVnlXV3BIZVIxdkluTmxqMWJoRFRLcWhERC4iLCJfX3YiOjB9LCJpYXQiOjE2NzA3Mzc4NTYsImV4cCI6MTY3MDc0NTA1Nn0.xFkkw79DmGD5UJqRDYsKrhSDV8bNbxOd-956agh8Tdk"
+    const user = await isAuth(bearerToken.split(" ")[1]);
+    console.log({ user });
+    const encryptedPassword = await bcrypt.hash(password, 10);
+    const token = jwt.sign(
+      { _id, name, email, role },
+      process.env.TOKEN_KEY || "",
+      {
+        expiresIn: "2h",
+      }
     );
-    console.log({ payload });
-    res.status(200).json(payload);
+    const updatedUserObject = {
+      _id: user._id,
+      name,
+      email,
+      role,
+      encryptedPassword,
+      token,
+    };
+    if (user.role === "admin" || user.role === "manager") {
+      await User.deleteOne(
+        { _id: user._id },
+      );
+      res.json({ message: "One User deleted by "+user.role });
+    } else if (user._id === userID) {
+      await User.deleteOne(
+        { _id: user._id },
+      );
+      res.json({ message: "One User deleted by "+user.role });
+    } else {
+      res.json({ message: "Can not update user" });
+    }
   } catch (err) {
-    console.log(err);
+    console.log({ err });
+    res.json({ message: err });
   }
 }
