@@ -9,6 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
 import CurrentTime from "./CurrentTime";
+import DifferenceTime from "./DifferenceTime";
 
 export default function TimezoneRecord() {
   const [records, setRecords] = useState<RecordType[]>([]);
@@ -18,7 +19,7 @@ export default function TimezoneRecord() {
       .get("http://localhost:3000/api/records", {
         headers: {
           Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Mzk2ZDczYWE0MTllZTFkZDgyNTEwZjUiLCJuYW1lIjoiYWRtaW4xIiwiZW1haWwiOiJhZG1pbjFAeWFob28uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjcwODUzNjkzLCJleHAiOjE2NzA4NjA4OTN9.qDkEvEk8tJlNeKsgtXjp0SLy73ZUukgNSc5w_ziToYE",
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Mzk2ZDczYWE0MTllZTFkZDgyNTEwZjUiLCJuYW1lIjoiYWRtaW4xIiwiZW1haWwiOiJhZG1pbjFAeWFob28uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjcwODYxNzgzLCJleHAiOjE2NzA4Njg5ODN9.ffk3lXn8WXt7J0s7rczFTQAIOBCNnldPEeZuRf9Bxcw",
         },
       })
       .then((response) => {
@@ -34,7 +35,7 @@ export default function TimezoneRecord() {
       Record
       <TableContainer
         component={Paper}
-        sx={{ width: 1200, marginTop: 10, marginLeft: 900 }}
+        sx={{ width: 1200, marginTop: 10, marginLeft: 70 }}
       >
         <Table aria-label="simple table">
           <TableHead>
@@ -60,7 +61,9 @@ export default function TimezoneRecord() {
                 <TableCell align="right">
                   <CurrentTime timezone={row.timezone} />
                 </TableCell>
-                <TableCell align="right">{row.timezone}</TableCell>
+                <TableCell align="right">
+                  <DifferenceTime timezone={row.timezone} />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

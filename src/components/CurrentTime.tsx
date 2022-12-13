@@ -5,7 +5,6 @@ interface PropsType {
 }
 export default function CurrentTime(props: PropsType) {
   const { timezone } = props;
-  console.log({ timezone });
   const [time, setTime] = useState(",");
   const timezoneToCurrentTime = () => {
     let date = new Date();
